@@ -1,11 +1,10 @@
-use serde_json::Value;
-use std::sync::mpsc::{self, Sender as MpscSender};
-use super::{AudioReceiver, AudioSource};
-use super::connection_info::ConnectionInfo;
-use super::Status as VoiceStatus;
 use constants::VoiceOpCode;
-use model::{ChannelId, GuildId, UserId, VoiceState};
-use super::threading;
+use gateway::InterMessage;
+use model::id::{ChannelId, GuildId, UserId};
+use model::voice::VoiceState;
+use std::sync::mpsc::{self, Sender as MpscSender};
+use super::connection_info::ConnectionInfo;
+use super::{AudioReceiver, AudioSource, Status as VoiceStatus, threading};
 
 /// The handler is responsible for "handling" a single voice connection, acting
 /// as a clean API above the inner connection.
@@ -99,13 +98,17 @@ pub struct Handler {
     ///
     /// When set via [`standalone`][`Handler::standalone`], it will not be
     /// present.
-    ws: Option<MpscSender<Value>>,
+    ws: Option<MpscSender<InterMessage>>,
 }
 
 impl Handler {
     /// Creates a new Handler.
     #[inline]
-    pub(crate) fn new(guild_id: GuildId, ws: MpscSender<Value>, user_id: UserId) -> Self {
+    pub(crate) fn new(
+        guild_id: GuildId,
+        ws: MpscSender<InterMessage>,
+        user_id: UserId,
+    ) -> Self {
         Self::new_raw(guild_id, Some(ws), user_id)
     }
 
@@ -347,7 +350,11 @@ impl Handler {
         }
     }
 
-    fn new_raw(guild_id: GuildId, ws: Option<MpscSender<Value>>, user_id: UserId) -> Self {
+    fn new_raw(
+        guild_id: GuildId,
+        ws: Option<MpscSender<InterMessage>>,
+        user_id: UserId,
+    ) -> Self {
         let (tx, rx) = mpsc::channel();
 
         threading::start(guild_id, rx);
@@ -408,7 +415,7 @@ impl Handler {
                 }
             });
 
-            let _ = ws.send(map);
+            let _ = ws.send(InterMessage::Json(map));
         }
     }
 }

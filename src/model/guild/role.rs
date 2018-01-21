@@ -1,14 +1,12 @@
+use model::prelude::*;
 use std::cmp::Ordering;
-use model::*;
 
-#[cfg(all(feature = "cache", feature = "model"))]
-use CACHE;
 #[cfg(all(feature = "builder", feature = "cache", feature = "model"))]
 use builder::EditRole;
 #[cfg(all(feature = "cache", feature = "model"))]
 use internal::prelude::*;
 #[cfg(all(feature = "cache", feature = "model"))]
-use http;
+use {CACHE, http};
 
 /// Information about a role within a guild. A role represents a set of
 /// permissions, and can be attached to one or multiple users. A role has
@@ -16,7 +14,7 @@ use http;
 /// are unique per guild and do not cross over to other guilds in any way, and
 /// can have channel-specific permission overrides in addition to guild-level
 /// permissions.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Role {
     /// The Id of the role. Can be used to calculate the role's creation date.
     pub id: RoleId,
@@ -81,7 +79,7 @@ impl Role {
     /// Make a role hoisted:
     ///
     /// ```rust,no_run
-    /// # use serenity::model::RoleId;
+    /// # use serenity::model::id::RoleId;
     /// # let role = RoleId(7).find().unwrap();
     /// // assuming a `role` has already been bound
     //

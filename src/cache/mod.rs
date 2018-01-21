@@ -42,12 +42,12 @@
 //! [`CACHE`]: ../struct.CACHE.html
 //! [`http`]: ../http/index.html
 
+use model::prelude::*;
 use parking_lot::RwLock;
 use std::collections::hash_map::Entry;
 use std::collections::{HashMap, HashSet};
 use std::default::Default;
 use std::sync::Arc;
-use model::*;
 
 mod cache_update;
 
@@ -168,8 +168,8 @@ impl Cache {
     /// used to determine how many members have not yet been received.
     ///
     /// ```rust,no_run
+    /// # use serenity::model::prelude::*;
     /// # use serenity::prelude::*;
-    /// # use serenity::model::*;
     /// #
     /// # #[cfg(feature = "client")]
     /// # fn main() {
@@ -196,8 +196,8 @@ impl Cache {
     ///     }
     /// }
     ///
-    /// let mut client = Client::new("token", Handler).unwrap(); 
-    /// 
+    /// let mut client = Client::new("token", Handler).unwrap();
+    ///
     /// client.start().unwrap();
     /// # }
     /// #
@@ -264,8 +264,8 @@ impl Cache {
     /// ```rust,no_run
     /// # #[cfg(feature = "client")]
     /// # fn main() {
+    /// # use serenity::model::prelude::*;
     /// # use serenity::prelude::*;
-    /// # use serenity::model::*;
     /// #
     /// use serenity::CACHE;
     ///
@@ -379,8 +379,8 @@ impl Cache {
     /// ```rust,no_run
     /// # #[cfg(feature = "client")]
     /// # fn main() {
+    /// # use serenity::model::prelude::*;
     /// # use serenity::prelude::*;
-    /// # use serenity::model::*;
     /// #
     /// use serenity::CACHE;
     ///
@@ -405,7 +405,7 @@ impl Cache {
     /// }
     ///
     /// let mut client = Client::new("token", Handler).unwrap();
-    /// 
+    ///
     /// client.start().unwrap();
     /// # }
     /// #
